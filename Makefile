@@ -3,23 +3,6 @@ WEB := web
 
 .PHONY: help build up down restart logs ps shell dbshell migrate makemigrations superuser collectstatic test clean
 
-help:
-	@echo "Available commands:"
-	@echo "  make build         - Build all containers"
-	@echo "  make up            - Start containers in background"
-	@echo "  make down          - Stop and remove containers"
-	@echo "  make restart       - Restart containers"
-	@echo "  make logs          - Follow logs"
-	@echo "  make ps            - Show containers status"
-	@echo "  make shell         - Open shell in web container"
-	@echo "  make dbshell       - Open PostgreSQL shell"
-	@echo "  make migrate       - Apply Django migrations"
-	@echo "  make makemigrations- Create Django migrations"
-	@echo "  make superuser     - Create Django superuser"
-	@echo "  make collectstatic - Collect static files"
-	@echo "  make test          - Run Django tests"
-	@echo "  make clean         - Stop containers and remove volumes"
-
 build:
 	$(COMPOSE) build
 
