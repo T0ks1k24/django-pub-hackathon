@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Вхід</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    {% if request.GET.get('registered') == '1' %}
+      <meta http-equiv="refresh" content="1; url={{ url('download_key') }}">
+    {% endif %}
   </head>
   <body
     class="min-h-screen overflow-x-hidden bg-slate-100 text-slate-900 antialiased md:h-screen md:overflow-hidden"
@@ -20,6 +23,12 @@
           <p class="mt-2 text-sm text-slate-600">
             Використайте логін та пароль для авторизації.
           </p>
+
+          {% if request.GET.get('registered') == '1' %}
+            <div class="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+              Реєстрація успішна! Завантаження ключа почнеться автоматично.
+            </div>
+          {% endif %}
 
           {% if form and form.errors %}
           <div

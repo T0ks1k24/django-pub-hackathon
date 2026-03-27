@@ -16,6 +16,9 @@ class RegisterViewTests(TestCase):
             },
         )
 
-        self.assertRedirects(response, reverse("login"))
+        expected_url = reverse("login") + "?registered=1"
+        self.assertRedirects(response, expected_url)
         self.assertTrue(User.objects.filter(username="alice").exists())
         self.assertTrue(ECPKey.objects.filter(user__username="alice").exists())
+        self.assertIn("private_key_download", self.client.session)
+        self.assertEqual(self.client.session["private_key_filename"], "alice_private_key.pem")

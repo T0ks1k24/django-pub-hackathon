@@ -58,7 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
+
 ]
 
 
@@ -215,8 +215,8 @@ LOGGING = {
             "class": "logging.FileHandler",
             "filename": "app.log",
             "formatter": "verbose",
-        }, 
-        
+        },
+
     },
 
     "loggers": {
@@ -224,11 +224,11 @@ LOGGING = {
         #     "handlers": ["console", "file"],
         #     "level": "INFO",
         # },
-        "ecp": {  
+        "ecp": {
             "handlers": ["console", "file"],
             "level": "DEBUG",
             "propagate": False,
-        },  
+        },
         "security": {
             "handlers": ["file"],
             "level": "WARNING",

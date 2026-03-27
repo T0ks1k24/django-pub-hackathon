@@ -150,7 +150,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "django", specifier = ">=6.0.3" },
-    { name = "ecp-lib", path = "../django-pub-sub/dist/ecp_lib-0.1.0-py3-none-any.whl" },
+    { name = "ecp-lib" },
     { name = "gunicorn", specifier = ">=25.2.0" },
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "psycopg2-binary", specifier = ">=2.9.11" },
@@ -159,20 +159,14 @@ requires-dist = [
 [[package]]
 name = "ecp-lib"
 version = "0.1.0"
-source = { path = "../django-pub-sub/dist/ecp_lib-0.1.0-py3-none-any.whl" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cryptography" },
 ]
+sdist = { url = "https://files.pythonhosted.org/packages/ed/e3/afea1b7970996d38a1189c21462004dead1a648046625d94848692a6a3e8/ecp_lib-0.1.0.tar.gz", hash = "sha256:50dd69c3456704995f4dcdba07e0fa13c807d73b1a85744ac06f2c79b5493662", size = 15731, upload-time = "2026-03-27T09:51:42.432Z" }
 wheels = [
-    { filename = "ecp_lib-0.1.0-py3-none-any.whl", hash = "sha256:f348d52fedb63ac97911ecab5d8f1b686917cc558840e2b858e7c56f7117dd25" },
+    { url = "https://files.pythonhosted.org/packages/10/7a/3ddb51afb55752ca0f66089d6195e998fbb529c9ce84db9672fbb937823f/ecp_lib-0.1.0-py3-none-any.whl", hash = "sha256:d41e7c61c17b60c86353b9bf8f973bc052032161b76d23af97eb4a3638db2861", size = 14269, upload-time = "2026-03-27T09:51:41.006Z" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "cryptography", specifier = ">=46.0.6" },
-    { name = "django", marker = "extra == 'django'", specifier = ">=4.2,<6.0" },
-]
-provides-extras = ["django"]
 
 [[package]]
 name = "gunicorn"

@@ -101,27 +101,34 @@ class RegisterView(CreateView):
         logger.info(f"User registered | user={user.username} | ip={ip}")
 
         try:
-            
             private_key = create_user_keys(self.object)
             logger.info(f"RSA key pair generated | user={user.username}")
 
-            
+            # Store the key in the session for download after redirect
+            request.session["private_key_download"] = private_key
+            request.session["private_key_filename"] = f"{user.username}_private_key.pem"
 
-            file_response = HttpResponse(
-                private_key,
-                content_type="application/x-pem-file",
-            )
-            file_response["Content-Disposition"] = (
-                f'attachment; filename="{user.username}_private_key.pem"'
-            )
-
-            logger.info(f"Private key sent to user | user={user.username}")
-
-            return file_response
+            return redirect(f"{self.success_url}?registered=1")
 
         except Exception:
             logger.exception(f"Error during registration | user={user.username}")
             raise
+
+
+class DownloadKeyView(View):
+    def get(self, request):
+        private_key = request.session.pop("private_key_download", None)
+        filename = request.session.pop("private_key_filename", "private_key.pem")
+
+        if not private_key:
+            return HttpResponse("Key not found or already downloaded", status=404)
+
+        response = HttpResponse(
+            private_key,
+            content_type="application/x-pem-file",
+        )
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
+        return response
 
 
 class LogoutView(View):
