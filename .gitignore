@@ -4,3 +4,6 @@ venv/
 .vscode/
 
 */.pyc
+*.pyc
+
+app.log

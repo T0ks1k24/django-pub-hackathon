@@ -18,12 +18,12 @@ services:
       dockerfile: Dockerfile
     env_file:
       - ./environment/backend.env
-    depends_on:
-      - db
     volumes:
       - .:/app
     ports:
       - "8000:8000"
+    depends_on:
+      - db
     networks:
       - app_network
 
