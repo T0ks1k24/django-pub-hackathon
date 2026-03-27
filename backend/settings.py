@@ -28,13 +28,9 @@ SECRET_KEY = os.environ.get(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = os.environ.get('DEBUG', 'False').lower() in {'1', 'true', 'yes', 'on'}
+DEBUG = os.environ.get('DEBUG', 'False').lower() in {'1', 'true', 'yes', 'on', 't'}
 
-# ALLOWED_HOSTS = [host.strip() for host in os.environ.get('ALLOWED_HOSTS', '').split(',') if host.strip()]
-
-
-DEBUG = True
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = [host.strip() for host in os.environ.get('ALLOWED_HOSTS', '').split(',') if host.strip()]
 
 # Application definition
 
@@ -58,10 +54,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
+
 ]
 
-
+AUTH_USER_MODEL = 'users.User'
 
 
 
@@ -179,8 +175,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -215,8 +211,8 @@ LOGGING = {
             "class": "logging.FileHandler",
             "filename": "app.log",
             "formatter": "verbose",
-        }, 
-        
+        },
+
     },
 
     "loggers": {
@@ -224,11 +220,11 @@ LOGGING = {
         #     "handlers": ["console", "file"],
         #     "level": "INFO",
         # },
-        "ecp": {  
+        "ecp": {
             "handlers": ["console", "file"],
             "level": "DEBUG",
             "propagate": False,
-        },  
+        },
         "security": {
             "handlers": ["file"],
             "level": "WARNING",

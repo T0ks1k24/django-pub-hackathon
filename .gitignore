@@ -5,5 +5,5 @@ venv/
 
 */.pyc
 *.pyc
-
+staticfiles
 app.log

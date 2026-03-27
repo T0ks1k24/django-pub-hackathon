@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   db:
     container_name: django-pub-db
@@ -16,13 +18,12 @@ services:
       dockerfile: Dockerfile
     env_file:
       - ./environment/backend.env
-    volumes:
-      - .:/app
-      - ./staticfiles:/app/staticfiles
-    ports:
-      - "127.0.0.1:8000:8000"
     depends_on:
       - db
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
     networks:
       - app_network
 
