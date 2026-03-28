@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "django>=6.0.3",
-    "ecp-lib",
+    "ecp-lib>=1.0.3",
     "gunicorn>=25.2.0",
     "jinja2>=3.1.6",
     "psycopg2-binary>=2.9.11",

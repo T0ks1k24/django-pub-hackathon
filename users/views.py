@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import logout, authenticate
+from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView as DjangoLoginView
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
@@ -7,8 +7,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, TemplateView
 
-from ecp_lib.auth import authenticate_with_private_key, read_private_key
-from ecp_lib.auth import create_user_keys
+from ecp_lib.auth import authenticate_with_private_key, read_private_key, create_user_keys, register_and_login_user
 
 import logging
 
@@ -63,41 +62,33 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "dashboard.html"
     login_url = "login"
 
-
 class RegisterView(CreateView):
     form_class = RegisterForm
     template_name = "auth/register.html"
-    success_url = reverse_lazy("login")
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            logger.info(f"Authenticated user tried to access register | user={request.user}")
-            return redirect("dashboard")
-        return super().dispatch(request, *args, **kwargs)
+    success_url = reverse_lazy("dashboard")
 
     def form_valid(self, form):
-        request = self.request
-        ip = request.META.get("REMOTE_ADDR")
-
-        self.object = form.save()
-        user = self.object
-
-        logger.info(f"User registered | user={user.username} | ip={ip}")
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password1')
 
         try:
-            private_key = create_user_keys(self.object)
-            logger.info(f"RSA key pair generated | user={user.username}")
+            user, private_key = register_and_login_user(
+                self.request,
+                username=username,
+                password=password
+            )
 
-            # Store the key in the session for download after redirect
-            request.session["private_key_download"] = private_key
-            request.session["private_key_filename"] = f"{user.username}_private_key.pem"
+            # Зберігаємо ключ для завантаження
+            self.request.session["private_key_download"] = private_key
+            self.request.session["private_key_filename"] = f"{user.username}_private_key.pem"
 
-            return redirect(f"{self.success_url}?registered=1")
+            # Редірект на дашборд. Там ми і покажемо "магію" завантаження.
+            return redirect(self.success_url)
 
-        except Exception:
-            logger.exception(f"Error during registration | user={user.username}")
-            raise
-
+        except Exception as e:
+            logger.exception(f"Error: {e}")
+            form.add_error(None, f"Помилка реєстрації: {e}")
+            return self.form_invalid(form)
 
 class DownloadKeyView(View):
     def get(self, request):
